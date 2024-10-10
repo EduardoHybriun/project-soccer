@@ -15,13 +15,34 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String  @db.VarChar(100)
-  surname  String  @db.VarChar(100)
-  email    String  @unique @db.VarChar(100)
-  password String  @db.VarChar(100)
+  id       Int          @id @default(autoincrement())
+  name     String       @db.VarChar(100)
+  surname  String       @db.VarChar(100)
+  email    String       @unique @db.VarChar(100)
+  password String       @db.VarChar(100)
   age      Int
-  team     String? @db.VarChar(100)
+  teams    TeamMember[]
 
   @@map("users")
+}
+
+model Team {
+  id        Int    @id @default(autoincrement())
+  name      String @db.VarChar(100)
+  day_match String @db.VarChar(100)
+
+  members TeamMember[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  team   Team @relation(fields: [teamId], references: [id])
+  teamId Int
+
+  @@unique([userId, teamId]) // Garantir que o mesmo jogador não seja adicionado ao mesmo time mais de uma vez
+  @@map("team_members")
 }
