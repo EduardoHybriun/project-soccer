@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { TeamDto } from './dto/team.dto';
+import { identity } from 'rxjs';
 
 @Controller('team')
 export class TeamController {
@@ -15,5 +16,10 @@ export class TeamController {
     @Get()
     async findAll() {
         return this.teamService.findAll();
+    }
+
+    @Put(":id")
+    async update(@Param("id") id: number, @Body() data: TeamDto) {
+        return this.teamService.update(Number(id), data);
     }
 }
