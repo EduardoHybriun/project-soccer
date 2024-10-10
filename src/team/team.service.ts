@@ -23,4 +23,8 @@ export class TeamService {
         return team;
     }
 
+    async findAll() {
+        return this.prisma.team.findMany();
+    }
+
 }
